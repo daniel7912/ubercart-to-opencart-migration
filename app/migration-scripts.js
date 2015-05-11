@@ -33,6 +33,8 @@ var opencart_db = mysql.createConnection({
 exports.truncate_tables = function(callback) {
 
 	var truncate_sql = '\
+		TRUNCATE oc_attribute;\
+		TRUNCATE oc_attribute_description;\
 		TRUNCATE oc_customer;\
 		TRUNCATE oc_option;\
 		TRUNCATE oc_option_description;\
