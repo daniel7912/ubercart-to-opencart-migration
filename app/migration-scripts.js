@@ -345,8 +345,7 @@ exports.products = function(socket, callback) {
 					status: '1',
 					viewed: '0',
 					date_added: timeCreated,
-					date_modified: timeCreated,
-					mfilter_values: ''
+					date_modified: timeCreated
 				},
 			function(err) {
 				if (err) { console.log('Products insert error - '+err); }
