@@ -385,49 +385,7 @@ exports.products = function(socket, callback) {
 							},
 						function(err) {
 							if (err) { console.log('Products description error - '+err); }
-
-							if (product.product_care == null) {
-								product.product_care = '';
-							}
-
-							// Next, insert the product care attribute
-							opencart_db.query('INSERT INTO oc_product_attribute SET ?',
-								{
-									product_id: product.product_id,
-									attribute_id: '1',
-									language_id: '1',
-									text: product.product_care
-								},
-							function(err) {
-								if (err) { console.log('Products care info error - '+err); }
-
-								if (product.product_delivery == null) {
-									product.product_delivery = '';
-								}
-
-
-								// Next, insert the product delivery attribute
-								opencart_db.query('INSERT INTO oc_product_attribute SET ?',
-									{
-										product_id: product.product_id,
-										attribute_id: '2',
-										language_id: '1',
-										text: product.product_delivery
-									},
-								function(err) {
-									if (err) { console.log('Products delivery info error - '+err); }
-
-									// End of async loop for this product
-									i++;
-									socket.emit('progress', (100 / products.length) * i);
-									cb();								
-
-								});
-								
-
-							});
-							
-
+							cb();
 						});
 						
 
