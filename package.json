@@ -1,0 +1,22 @@
+{
+  "name": "ubercart-to-opencart-migration",
+  "description": "Node js script to migrate Ubercart data to an opencart install",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "dependencies": {
+    "async": "*",
+    "async-each-object": "*",
+    "express": "*",
+    "express-session": "*",
+    "jade": "*",
+    "lodash": "*",
+    "moment": "*",
+    "mysql": "*",
+    "php-unserialize": "*",
+    "request": "*",
+    "socket.io": "*"
+  }
+}
