@@ -135,7 +135,7 @@ exports.users = function(socket, callback) {
 		});
 
 	});
-	
+
 
 }
 
@@ -230,8 +230,8 @@ exports.options = function(socket, callback) {
 								cb();
 							});
 
-							
-							
+
+
 
 						});
 
@@ -387,7 +387,7 @@ exports.products = function(socket, callback) {
 							if (err) { console.log('Products description error - '+err); }
 							cb();
 						});
-						
+
 
 					});
 
@@ -514,7 +514,7 @@ exports.vocabulary = function(socket, callback) {
 			var subVocabularyID;
 
 			vocabulary_inserts(vocabularyID, '0', v.description, v.name, todaysDate, function() {
-			
+
 				// Next, find sub vocabulary attached to the main term
 				var sub_vocabulary_sql = 'SELECT\
 											term_data.tid as term_id,\
@@ -631,7 +631,7 @@ exports.category_paths = function(socket, callback) {
 						ubercart_db.query('SELECT * FROM term_hierarchy WHERE tid = ?', currentTerm, function(err, sub_level, fields) {
 
 							if (err) { console.log('Select term_hierarchy error - '+err); }
-							
+
 							currentTerm = sub_level[0].parent;
 							if (currentTerm !== 0) {
 								paths.push(sub_level[0].parent);
@@ -722,7 +722,7 @@ exports.product_categories = function(socket, callback) {
 		async.eachSeries(product_categories, function(pc, cb) {
 
 			var categories = [];
-			
+
 			var currentTerm = pc.parent;
 			categories.push(pc.tid);
 
@@ -741,7 +741,7 @@ exports.product_categories = function(socket, callback) {
 					ubercart_db.query('SELECT * FROM term_hierarchy WHERE tid = ?', currentTerm, function(err, sub_level, fields) {
 
 						if (err) { console.log('Select term_hierarchy error - '+err); }
-						
+
 						currentTerm = sub_level[0].parent;
 						if (currentTerm !== 0) {
 							categories.push(sub_level[0].parent);
@@ -940,7 +940,7 @@ exports.product_images = function(socket, callback) {
 			var image_location = '/catalog/product/'+filename;
 
 			opencart_db.query('UPDATE oc_product SET image = ? WHERE product_id = ?', [image_location, image.nid], function(err, result) {
-				
+
 				if (err) { console.log('Update oc_product with image error - '+err); }
 
 				var image_url = (config.url_from+'/'+image.filepath).replace(' ', '%20');
@@ -1100,7 +1100,7 @@ exports.orders = function(socket, callback) {
 					function(err) {
 
 						if (err) { console.log('Orders insert error - '+err); }
-						
+
 						// Next, find the products attached to this order
 						ubercart_db.query('SELECT * FROM uc_order_products WHERE order_id = ?', [order.order_id], function(err, order_products, fields) {
 
@@ -1150,13 +1150,13 @@ exports.orders = function(socket, callback) {
 											taxShippingCallback(result);
 										});
 									}
-									
+
 									getTaxShippingValues(order_line_items, function(taxShipping) {
 
 										opencart_db.query('INSERT INTO oc_order_product SET ?',
 											{
 												'order_id': op.order_id,
-												'product_id': op.order_product_id,
+												'product_id': op.nid,
 												'name': op.title,
 												'model': op.model,
 												'quantity': op.qty,
@@ -1168,7 +1168,7 @@ exports.orders = function(socket, callback) {
 										function(err, result) {
 
 											if (err) { console.log('Order products insert error - '+err); }
-											
+
 											var orderProductID = result.insertId;
 
 											var unserializedData = PHPUnserialize.unserialize(op.data);
@@ -1177,10 +1177,10 @@ exports.orders = function(socket, callback) {
 												unserializedData.attributes,
 												function iterator(value, key, nextEach) {
 
-													// Get value of the object													
+													// Get value of the object
 													for (k in value) {
 														if (value.hasOwnProperty(k)) {
-															
+
 															opencart_db.query('INSERT INTO oc_order_option SET ?',
 																{
 																	order_id: op.order_id,
@@ -1261,7 +1261,7 @@ exports.orders = function(socket, callback) {
 									i++;
 									socket.emit('progress', (100 / orders.length) * i);
 									cb();
-								});			
+								});
 
 							});
 
@@ -1320,7 +1320,7 @@ exports.order_history = function(socket, callback) {
 
 			var dateAdded = new Date(oc.created*1000);
 
-			opencart_db.query('INSERT INTO oc_order_history SET ?', 
+			opencart_db.query('INSERT INTO oc_order_history SET ?',
 				{
 					order_id: oc.order_id,
 					order_status_id: order_status,
@@ -1408,7 +1408,7 @@ exports.seo_urls = function(socket, callback) {
 					socket.emit('progress', (100 / product_descriptions.length) * i);
 					cb();
 				});
-				
+
 			});
 
 		}, function(err) {
@@ -1445,7 +1445,7 @@ exports.seo_urls = function(socket, callback) {
 							socket.emit('progress', (100 / category_descriptions.length) * i);
 							cb();
 						});
-						
+
 					});
 
 				}, function(err) {
